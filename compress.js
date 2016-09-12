@@ -23,9 +23,9 @@ var index = 0;
 function compressImage(filename, photos) {
   console.log(filename);
   gm('photos/' + filename)
-    .resize(20, 20, '!')
-    .dither()
-    .colors(4)
+    .resize(10, 10, '!')
+    .colors(3)
+    .blur(5, 3)
     // .identify(function (err, data) {
     //   if (err) {
     //     console.log(err);
@@ -70,7 +70,7 @@ function compressImage(filename, photos) {
 var meta = [];
 fs.readdir('photos/', function(err, files) {
   files = _.filter(files, function(file, i) {
-    return (i % 10 === 0) && _.last(file.split('.')) === 'jpg';
+    return (i % 5 === 0) && _.last(file.split('.')) === 'jpg';
   });
   var file = files.pop();
   compressImage(file, files);
