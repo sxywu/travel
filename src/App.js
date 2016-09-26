@@ -8,6 +8,8 @@ var App = React.createClass({
   getInitialState() {
     return {
       trips: [],
+      width: 800,
+      height: 1000,
     };
   },
 
@@ -30,13 +32,13 @@ var App = React.createClass({
       });
     });
 
-    console.log(trips);
+    this.setState({trips});
   },
 
   render() {
     return (
       <div className="App">
-        <Canvas />
+        <Canvas {...this.state} />
       </div>
     );
   }
