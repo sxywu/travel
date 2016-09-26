@@ -1,38 +1,42 @@
 import React from 'react';
 import _ from 'lodash';
+import chroma from 'chroma-js';
 
 import Canvas from './Canvas';
-import metadata from './data/metadata.json';
+import photos from './data/colors.json';
 
+var backgroundColor = chroma('#273547').darken().hex();
 var App = React.createClass({
   getInitialState() {
     return {
-      trips: [],
-      width: 800,
-      height: 1000,
+      width: 1400,
+      height: 1400,
+      colors: [],
     };
   },
 
   componentWillMount() {
-    var trips = _.map(metadata, (photos, tripId) => {
-      return _.map(photos, photo => {
-        var date = photo[1] && photo[1].split(' ');
-        var time = date && date[1];
-        date = date && date[0].replace(/:/g, '/');
-        date = date && date + ' ' + time;
-        date = date && new Date(date);
+    var colors = _.chain(photos)
+      .map((photo) => {
+        return _.map(photo.colors, color => {
+          if (chroma.contrast(backgroundColor, color) < 4.5) {
+            // if contrast is low, up the saturation
+            color = chroma(color).brighten().saturate(2).hex();
+          } else {
+            color = chroma(color).saturate(2).hex();
+          }
 
-        return {
-          id: photo[0],
-          image: require('./img/' + photo[0]),
-          tripId,
-          date,
-          geo: photo[2],
-        };
-      });
-    });
+          return {
+            id: photo.id,
+            tripId: photo.tripId,
+            date: photo.date && new Date(photo.date),
+            geo: photo.geo,
+            color: color,
+          };
+        });
+      }).flatten().value();
 
-    this.setState({trips});
+    this.setState({colors});
   },
 
   render() {
