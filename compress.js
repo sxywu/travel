@@ -19,59 +19,91 @@ function ConvertDMSToDD(degrees, minutes, seconds, direction) {
     return dd;
 }
 
+var meta = {};
 var index = 0;
-function compressImage(filename, photos) {
-  console.log(filename);
-  gm('photos/' + filename)
-    .resize(10, 10, '!')
-    .colors(3)
-    .blur(5, 3)
-    // .identify(function (err, data) {
-    //   if (err) {
-    //     console.log(err);
-    //     return;
-    //   }
-    //   data = data['Profile-EXIF'];
-    //   var date = data['GPS Date Stamp'];
-    //   date = date && date.replace(/\:/g, '/');
-    //
-    //   var m = [];
-    //   m.push(date);
-    //
-    //   var lat = data['GPS Latitude'];
-    //   var long = data['GPS Longitude'];
-    //   if (lat && long) {
-    //     lat = ParseDMS(data['GPS Latitude Ref'], lat);
-    //     long = ParseDMS(data['GPS Longitude Ref'], long);
-    //     m.push([lat, long]);
-    //   }
-    //   console.log(m)
-    //   meta.push(m);
-    // })
-    .write('processed/' + index + '.jpg', function (err) {
+function compressImage(folder, folders, filename, files) {
+  console.log('filename', folder, filename, index);
+  if (_.isEmpty(files)) {
+    fs.writeFile('metadata.json', JSON.stringify(meta), 'utf8');
+    // if there are also no more folders, stop
+    if (_.isEmpty(folders)) {
+      return;
+    }
+
+    // if there are no more files, go to next folder
+    index = 0;
+    folder = folders.pop();
+    processFolder(folder, folders);
+    return;
+  }
+
+  gm('photos/' + folder + '/' + filename)
+    .identify(function(err, data) {
       if (err) {
         console.log(err);
         return;
       }
-      // pop the next photo and load it until there is no more
-      if (_.isEmpty(photos)) {
-        // if it's done, save the data
-        // fs.writeFile('metadata.json', JSON.stringify(meta), 'utf8');
-        return;
+
+      data = data['Profile-EXIF'];
+      var date = data['Date Time'];
+      var name = folder + '-' + index + '.jpg';
+
+      var m = [name];
+      m.push(date);
+
+      var lat = data['GPS Latitude'];
+      var long = data['GPS Longitude'];
+      if (lat && long) {
+        lat = ParseDMS(data['GPS Latitude Ref'], lat);
+        long = ParseDMS(data['GPS Longitude Ref'], long);
+        m.push([lat, long]);
       }
+      console.log('meta', m)
+      meta[folder].push(m);
 
-      index += 1;
-      var photo = photos.pop();
-      compressImage(photo, photos);
+      gm('photos/' + folder + '/' + filename)
+        .resize(8, 8, '!')
+        .write('processed/' + name, function (err) {
+          if (err) {
+            console.log(err);
+            return;
+          }
 
-    });
+          index += 1;
+          filename = files.pop();
+          compressImage(folder, folders, filename, files);
+        });
+    })
+    // .resize(10, 10, '!')
+    // .colors(3)
+    // .blur(5, 3)
+    // .write('processed/' + index + '.jpg', function (err) {
+    //   if (err) {
+    //     console.log(err);
+    //     return;
+    //   }
+    //
+    //
+    // });
 }
 
-var meta = [];
-fs.readdir('photos/', function(err, files) {
-  files = _.filter(files, function(file, i) {
-    return (i % 5 === 0) && _.last(file.split('.')) === 'jpg';
+function processFolder(folder, folders) {
+  fs.readdir('photos/' + folder, function(err, files) {
+    files = _.filter(files, function(file, i) {
+      return (i % 5 === 0) && _.last(file.split('.')) === 'jpg';
+    });
+
+    // create object
+    meta[folder] = [];
+
+    var file = files.pop();
+    compressImage(folder, folders, file, files);
   });
-  var file = files.pop();
-  compressImage(file, files);
+}
+
+fs.readdir('photos/', function(err, folders) {
+  folders = _.filter(folders, function(folder) {return folder !== '.DS_Store'});
+  var folder = folders.pop();
+  console.log('folders', folders);
+  processFolder(folder, folders);
 });
