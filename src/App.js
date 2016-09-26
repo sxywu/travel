@@ -1,21 +1,45 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import _ from 'lodash';
 
-class App extends Component {
+import Canvas from './Canvas';
+import metadata from './data/metadata.json';
+
+var App = React.createClass({
+  getInitialState() {
+    return {
+      trips: [],
+    };
+  },
+
+  componentWillMount() {
+    var trips = _.map(metadata, (photos, tripId) => {
+      return _.map(photos, photo => {
+        var date = photo[1] && photo[1].split(' ');
+        var time = date && date[1];
+        date = date && date[0].replace(/:/g, '/');
+        date = date && date + ' ' + time;
+        date = date && new Date(date);
+
+        return {
+          id: photo[0],
+          image: require('./img/' + photo[0]),
+          tripId,
+          date,
+          geo: photo[2],
+        };
+      });
+    });
+
+    console.log(trips);
+  },
+
   render() {
     return (
       <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Canvas />
       </div>
     );
   }
-}
+});
 
 export default App;
