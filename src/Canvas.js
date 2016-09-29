@@ -1,11 +1,11 @@
 import React from 'react';
-import _ from 'lodash';
 import * as d3 from 'd3';
 
 var radius = 4;
 var simulation = d3.forceSimulation()
-  .force('collide', d3.forceCollide(radius / 2))
-  .alphaMin(.25);
+  .force('collide', d3.forceCollide(radius + 2))
+  .force('x', d3.forceX().x(d => d.focusX))
+  .force('y', d3.forceY().y(d => d.focusY));
 
 var Canvas = React.createClass({
   componentDidMount() {
