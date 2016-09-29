@@ -25,6 +25,7 @@ var Trip = React.createClass({
     // all the colors
     this.circles = this.trip
       .append('g').classed('circles', true)
+      // .style("filter", "url(#gooey)")
       .selectAll('circle')
       .data(this.props.colors, d => d.id)
       .enter().append('circle')

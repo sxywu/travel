@@ -3,8 +3,6 @@ import * as d3 from 'd3';
 import _ from 'lodash';
 import Trip from './Trip';
 
-var radius = 2;
-
 var Trips = React.createClass({
   componentDidMount() {
     this.svg = d3.select(this.refs.svg);
@@ -18,7 +16,7 @@ var Trips = React.createClass({
     var gooey = defs.append('filter').attr('id','gooey');
     gooey.append('feGaussianBlur')
       .attr('in','SourceGraphic')
-      .attr('stdDeviation','1')
+      .attr('stdDeviation','1.75')
       .attr('result','blur');
     gooey.append('feColorMatrix')
       .attr('in','blur')

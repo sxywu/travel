@@ -6,13 +6,15 @@ import chroma from 'chroma-js';
 import Trips from './Trips';
 import photos from './data/colors.json';
 
-var width = 1500;
-var height = 5000;
+var width = 1600;
+var height = 1600;
+var tripSize = 400;
 var backgroundColor = chroma('#273547').darken().hex();
 var fontColor = chroma('#273547').brighten(4).hex();
 
-// var xScale = d3.scaleLinear().domain([-180, 180]).range([0, width]);
+var yScale = d3.scaleLinear().domain([0, 360]).range([tripSize / 8, tripSize / 3]);
 var timeScale = d3.scaleLinear().range([-.5 * Math.PI, 1.5 * Math.PI]);
+
 var App = React.createClass({
   getInitialState() {
     return {
@@ -25,8 +27,7 @@ var App = React.createClass({
 
   componentWillMount() {
     var index = 0;
-    var perRow = 2;
-    var tripSize = 600;
+    var perRow = 4;
 
     var trips = _.chain(photos)
       .filter(photo => {
@@ -64,16 +65,17 @@ var App = React.createClass({
           .map((photo) => {
             var hour = d3.timeHour.floor(photo.date);
             var angle = timeScale(hour);
-            var focusX = Math.cos(angle) * (tripSize / 4);
-            var focusY = Math.sin(angle) * (tripSize / 4);
 
             return _.map(photo.colors, color => {
               if (chroma.contrast(backgroundColor, color) < 4.5) {
                 // if contrast is low, up the saturation
-                color = chroma(color).brighten().saturate(2).hex();
+                color = chroma(color).brighten().saturate(2);
               } else {
-                color = chroma(color).saturate(2).hex();
+                color = chroma(color).saturate(2);
               }
+              var radius = yScale(color.hsv()[0]);
+              var focusX = Math.cos(angle) * radius;
+              var focusY = Math.sin(angle) * radius;
 
               return {
                 id: photo.id,
@@ -82,7 +84,7 @@ var App = React.createClass({
                 focusX,
                 focusY,
                 geo: photo.geo,
-                color: color,
+                color: color.hex(),
               };
             });
           }).flatten().value();
@@ -96,7 +98,6 @@ var App = React.createClass({
         }
       }).value();
 
-    console.log(trips)
     this.setState({trips});
   },
 
