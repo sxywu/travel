@@ -1,7 +1,7 @@
 import React from 'react';
 import * as d3 from 'd3';
 
-var radius = 3;
+var radius = 2;
 var Trip = React.createClass({
   componentWillMount() {
     this.simulation = d3.forceSimulation()
@@ -22,12 +22,28 @@ var Trip = React.createClass({
       .attr('fill', this.props.fontColor)
       .text(this.props.id);
 
+    // all the colors
     this.circles = this.trip
+      .append('g').classed('circles', true)
       .selectAll('circle')
       .data(this.props.colors, d => d.id)
       .enter().append('circle')
       .attr('r', radius)
       .attr('fill', (d) => d.color);
+
+    // add in markers
+    this.trip.append('g')
+      .classed('markers', true)
+      .attr('fill', 'none')
+      .attr('stroke', this.props.fontColor)
+      .attr('opacity', .25)
+      .selectAll('line')
+      .data(this.props.days)
+      .enter().append('line')
+      .attr('x1', (d) => d.x1)
+      .attr('x2', (d) => d.x2)
+      .attr('y1', (d) => d.y1)
+      .attr('y2', (d) => d.y2);
 
     this.simulation
       .nodes(this.props.colors)

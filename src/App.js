@@ -12,7 +12,7 @@ var backgroundColor = chroma('#273547').darken().hex();
 var fontColor = chroma('#273547').brighten(4).hex();
 
 // var xScale = d3.scaleLinear().domain([-180, 180]).range([0, width]);
-var timeScale = d3.scaleTime().range([0, 360]);
+var timeScale = d3.scaleLinear().range([-.5 * Math.PI, 1.5 * Math.PI]);
 var App = React.createClass({
   getInitialState() {
     return {
@@ -44,6 +44,20 @@ var App = React.createClass({
         startDate = d3.timeDay.floor(startDate);
         endDate = d3.timeDay.ceil(endDate);
         timeScale.domain([startDate, endDate]);
+        // now get all the days between start and end
+        var days = d3.timeDay.range(startDate, endDate, 1);
+        days = _.map(days, (day, index) => {
+          var angle = timeScale(day);
+          return {
+            index,
+            day,
+            angle,
+            x1: Math.cos(angle) * (tripSize / 8),
+            y1: Math.sin(angle) * (tripSize / 8),
+            x2: Math.cos(angle) * (tripSize / 3),
+            y2: Math.sin(angle) * (tripSize / 3),
+          }
+        });
 
         var colors = _.chain(photos)
           .map((photo) => {
@@ -76,9 +90,12 @@ var App = React.createClass({
           x,
           y,
           colors,
+          days,
+          startDate,
+          endDate,
           id: tripId,
         }
-      }).value();
+      }).sortBy(trip => trip.startDate).value();
 
     this.setState({trips});
   },
