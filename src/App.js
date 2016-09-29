@@ -3,7 +3,7 @@ import _ from 'lodash';
 import * as d3 from 'd3';
 import chroma from 'chroma-js';
 
-import Canvas from './Canvas';
+import Trips from './Trips';
 import photos from './data/colors.json';
 
 var width = 1500;
@@ -25,8 +25,8 @@ var App = React.createClass({
 
   componentWillMount() {
     var index = 0;
-    var perRow = 3;
-    var tripSize = 400;
+    var perRow = 4;
+    var tripSize = 300;
 
     var trips = _.chain(photos)
       .filter(photo => {
@@ -49,8 +49,8 @@ var App = React.createClass({
           .map((photo) => {
             var hour = d3.timeHour.floor(photo.date);
             var angle = timeScale(hour);
-            var focusX = -Math.cos(angle) * (tripSize / 2);
-            var focusY = Math.sin(angle) * (tripSize / 2);
+            var focusX = Math.cos(angle) * (tripSize / 4);
+            var focusY = Math.sin(angle) * (tripSize / 4);
 
             return _.map(photo.colors, color => {
               if (chroma.contrast(backgroundColor, color) < 4.5) {
@@ -86,7 +86,7 @@ var App = React.createClass({
   render() {
     return (
       <div className="App">
-        <Canvas {...this.state} />
+        <Trips {...this.state} />
       </div>
     );
   }
