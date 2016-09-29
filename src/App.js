@@ -7,7 +7,7 @@ import Trips from './Trips';
 import photos from './data/colors.json';
 
 var width = 1500;
-var height = 1800;
+var height = 5000;
 var backgroundColor = chroma('#273547').darken().hex();
 var fontColor = chroma('#273547').brighten(4).hex();
 
@@ -25,14 +25,15 @@ var App = React.createClass({
 
   componentWillMount() {
     var index = 0;
-    var perRow = 4;
-    var tripSize = 300;
+    var perRow = 2;
+    var tripSize = 600;
 
     var trips = _.chain(photos)
       .filter(photo => {
         photo.date = photo.date && new Date(photo.date);
         return photo.date;
-      }).groupBy(photo => photo.tripId)
+      }).sortBy(photo => -photo.date)
+      .groupBy(photo => photo.tripId)
       .map((photos, tripId) => {
         // first calculate trip position
         var x = (index % perRow + .5) * tripSize;
@@ -91,12 +92,11 @@ var App = React.createClass({
           y,
           colors,
           days,
-          startDate,
-          endDate,
           id: tripId,
         }
-      }).sortBy(trip => trip.startDate).value();
+      }).value();
 
+    console.log(trips)
     this.setState({trips});
   },
 
