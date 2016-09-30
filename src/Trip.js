@@ -1,16 +1,18 @@
 import React from 'react';
 import * as d3 from 'd3';
 
-var radius = 1;
+var radius = 1.5;
 var Trip = React.createClass({
   componentWillMount() {
     this.simulation = d3.forceSimulation()
-      .force('collide', d3.forceCollide(radius + 1))
+      .force('collide', d3.forceCollide(radius))
       .force('x', d3.forceX().x(d => d.focusX))
       .force('y', d3.forceY().y(d => d.focusY));
   },
 
   componentDidMount() {
+    this.ctx = this.refs.canvas.getContext('2d');
+
     this.svg = d3.select(this.refs.svg)
       .append('g')
       .attr('transform', (d) =>
@@ -43,6 +45,15 @@ var Trip = React.createClass({
   },
 
   forceTick() {
+    // clear canvas
+    this.ctx.clearRect(0, 0, this.props.size, this.props.size);
+    _.each(this.props.colors, color => {
+      this.ctx.beginPath();
+      this.ctx.arc(color.x + this.props.size / 2, color.y + this.props.size / 2,
+        radius, 0, 2 * Math.PI, true);
+      this.ctx.fillStyle = color.color;
+      this.ctx.fill();
+    });
 
         // all the colors
     //     this.circles = this.trip
@@ -57,12 +68,17 @@ var Trip = React.createClass({
   },
 
   render() {
-    var style = {verticalAlign: 'middle'};
+    var style = {position: 'relative'};
+    var canvasStyle = {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+    }
     return (
-      <div>
-        <svg style={style} ref='svg'
+      <div style={style}>
+        <svg ref='svg'
           width={this.props.size} height={this.props.size} />
-        <canvas style={style} ref='canvas'
+        <canvas style={canvasStyle} ref='canvas'
           width={this.props.size} height={this.props.size}  />
       </div>
     );
