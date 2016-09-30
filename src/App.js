@@ -3,7 +3,7 @@ import _ from 'lodash';
 import * as d3 from 'd3';
 import chroma from 'chroma-js';
 
-import Trips from './Trips';
+import Trip from './Trip';
 import photos from './data/more_colors.json';
 
 var width = 1600;
@@ -112,9 +112,13 @@ var App = React.createClass({
   },
 
   render() {
+    var tripStyle = {fontColor: this.state.fontColor};
+    var trips = _.map(this.state.trips, (trip) => {
+      return <Trip {...trip} {...tripStyle} />
+    });
     return (
       <div className="App">
-        <Trips {...this.state} />
+        {trips}
       </div>
     );
   }

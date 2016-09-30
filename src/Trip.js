@@ -13,7 +13,7 @@ var Trip = React.createClass({
   componentDidMount() {
     this.trip = d3.select(this.refs.trip)
       .attr('transform', (d) =>
-        'translate(' + [this.props.x, this.props.y] + ')');
+        'translate(' + [this.props.size / 2, this.props.size / 2] + ')');
 
     // add in trip name
     this.trip.append('text')
@@ -56,8 +56,11 @@ var Trip = React.createClass({
   },
 
   render() {
+    var style = {verticalAlign: 'middle'};
     return (
-      <g ref='trip' />
+      <svg style={style} width={this.props.size} height={this.props.size}>
+        <g ref='trip' />
+      </svg>
     );
   }
 });
