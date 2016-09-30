@@ -11,29 +11,20 @@ var Trip = React.createClass({
   },
 
   componentDidMount() {
-    this.trip = d3.select(this.refs.trip)
+    this.svg = d3.select(this.refs.svg)
+      .append('g')
       .attr('transform', (d) =>
         'translate(' + [this.props.size / 2, this.props.size / 2] + ')');
 
     // add in trip name
-    this.trip.append('text')
+    this.svg.append('text')
       .attr('text-anchor', 'middle')
       .attr('dy', '.35em')
       .attr('fill', this.props.fontColor)
       .text(this.props.id);
 
-    // all the colors
-    this.circles = this.trip
-      .append('g').classed('circles', true)
-      // .style("filter", "url(#gooey)")
-      .selectAll('circle')
-      .data(this.props.colors, d => d.id)
-      .enter().append('circle')
-      .attr('r', radius)
-      .attr('fill', (d) => d.color);
-
     // add in markers
-    this.trip.append('g')
+    this.svg.append('g')
       .classed('markers', true)
       .attr('fill', 'none')
       .attr('stroke', this.props.fontColor)
@@ -52,15 +43,28 @@ var Trip = React.createClass({
   },
 
   forceTick() {
-    this.circles.attr('transform', (d) => 'translate(' + [d.x, d.y] + ')')
+
+        // all the colors
+    //     this.circles = this.trip
+    //       .append('g').classed('circles', true)
+    //       // .style("filter", "url(#gooey)")
+    //       .selectAll('circle')
+    //       .data(this.props.colors, d => d.id)
+    //       .enter().append('circle')
+    //       .attr('r', radius)
+    //       .attr('fill', (d) => d.color);
+    // this.circles.attr('transform', (d) => 'translate(' + [d.x, d.y] + ')')
   },
 
   render() {
     var style = {verticalAlign: 'middle'};
     return (
-      <svg style={style} width={this.props.size} height={this.props.size}>
-        <g ref='trip' />
-      </svg>
+      <div>
+        <svg style={style} ref='svg'
+          width={this.props.size} height={this.props.size} />
+        <canvas style={style} ref='canvas'
+          width={this.props.size} height={this.props.size}  />
+      </div>
     );
   }
 });
