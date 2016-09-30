@@ -1,7 +1,7 @@
 import React from 'react';
 import * as d3 from 'd3';
 
-var radius = 2;
+var radius = 1;
 var Trip = React.createClass({
   componentWillMount() {
     this.simulation = d3.forceSimulation()
