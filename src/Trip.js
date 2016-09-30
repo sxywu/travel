@@ -1,13 +1,14 @@
 import React from 'react';
 import * as d3 from 'd3';
 
-var radius = 1.5;
+var radius = 1;
 var Trip = React.createClass({
   componentWillMount() {
     this.simulation = d3.forceSimulation()
       .force('collide', d3.forceCollide(radius))
       .force('x', d3.forceX().x(d => d.focusX))
-      .force('y', d3.forceY().y(d => d.focusY));
+      .force('y', d3.forceY().y(d => d.focusY))
+      .alphaMin(.1);
   },
 
   componentDidMount() {
@@ -26,18 +27,18 @@ var Trip = React.createClass({
       .text(this.props.id);
 
     // add in markers
-    this.svg.append('g')
-      .classed('markers', true)
-      .attr('fill', 'none')
-      .attr('stroke', this.props.fontColor)
-      .attr('opacity', .25)
-      .selectAll('line')
-      .data(this.props.days)
-      .enter().append('line')
-      .attr('x1', (d) => d.x1)
-      .attr('x2', (d) => d.x2)
-      .attr('y1', (d) => d.y1)
-      .attr('y2', (d) => d.y2);
+    // this.svg.append('g')
+    //   .classed('markers', true)
+    //   .attr('fill', 'none')
+    //   .attr('stroke', this.props.fontColor)
+    //   .attr('opacity', .25)
+    //   .selectAll('line')
+    //   .data(this.props.days)
+    //   .enter().append('line')
+    //   .attr('x1', (d) => d.x1)
+    //   .attr('x2', (d) => d.x2)
+    //   .attr('y1', (d) => d.y1)
+    //   .attr('y2', (d) => d.y2);
 
     this.simulation
       .nodes(this.props.colors)
@@ -45,6 +46,8 @@ var Trip = React.createClass({
   },
 
   forceTick() {
+    if (this.simulation.alpha() > .8) return;
+
     // clear canvas
     this.ctx.clearRect(0, 0, this.props.size, this.props.size);
     _.each(this.props.colors, color => {
