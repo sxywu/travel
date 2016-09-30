@@ -48,7 +48,7 @@ function compressImage(folder, folders, filename, files) {
       var date = data['Date Time'];
       var name = folder + '-' + index + '.jpg';
 
-      var m = [name];
+      var m = [name, filename];
       m.push(date);
 
       var lat = data['GPS Latitude'];
@@ -90,7 +90,7 @@ function compressImage(folder, folders, filename, files) {
 function processFolder(folder, folders) {
   fs.readdir('photos/' + folder, function(err, files) {
     files = _.filter(files, function(file, i) {
-      return (i % 5 === 0) && _.last(file.split('.')) === 'jpg';
+      return _.last(file.split('.')) === 'jpg';
     });
 
     // create object
