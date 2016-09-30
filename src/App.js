@@ -11,7 +11,7 @@ var height = 6400;
 var backgroundColor = chroma('#273547').darken().hex();
 var fontColor = chroma('#273547').brighten(4).hex();
 
-var maxWidth = 800;
+var maxWidth = 700;
 var sizeScale = d3.scaleLinear().range([150, maxWidth]);
 var radiusScale = d3.scaleLinear().domain([0, 360]);
 var timeScale = d3.scaleLinear().range([-.5 * Math.PI, 1.5 * Math.PI]);
@@ -104,6 +104,7 @@ var App = React.createClass({
         colors,
         days,
         id: tripId,
+        size: tripSize,
       }
     });
 
