@@ -1,5 +1,6 @@
 import React from 'react';
 import * as d3 from 'd3';
+import _ from 'lodash';
 
 var radius = 1;
 var Trip = React.createClass({
