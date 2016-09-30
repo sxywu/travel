@@ -11,11 +11,10 @@ var height = 6400;
 var backgroundColor = chroma('#273547').darken().hex();
 var fontColor = chroma('#273547').brighten(4).hex();
 
-var maxWidth = 600;
+var maxWidth = 500;
 var sizeScale = d3.scaleLinear().range([100, maxWidth]);
-var radiusScale = d3.scaleLinear();
-var angleScale = d3.scaleLinear().domain([0, 360])
-  .range([-.5 * Math.PI, 1.5 * Math.PI]);
+var radiusScale = d3.scaleLinear().domain([0, 360]);
+var angleScale = d3.scaleLinear().range([-.5 * Math.PI, 1.5 * Math.PI]);
 
 var App = React.createClass({
   getInitialState() {
@@ -43,7 +42,7 @@ var App = React.createClass({
 
     trips = _.map(trips, (photos, tripId) => {
       var tripSize = sizeScale(photos.length);
-      radiusScale.range([tripSize * .05, tripSize * .45]);
+      radiusScale.range([tripSize * .1, tripSize * .45]);
 
       // first calculate trip position
       var x = (index % perRow + .5) * maxWidth;
@@ -55,38 +54,39 @@ var App = React.createClass({
       var endDate = _.maxBy(photos, photo => photo.date).date;
       startDate = d3.timeDay.floor(startDate);
       endDate = d3.timeDay.ceil(endDate);
-      radiusScale.domain([startDate, endDate]);
+      angleScale.domain([startDate, endDate]);
       // now get all the days between start and end
-      // var days = d3.timeDay.range(startDate, endDate, 1);
-      // days = _.map(days, (day, index) => {
-      //   var angle = angleScale(day);
-      //   return {
-      //     index,
-      //     day,
-      //     angle,
-      //     x1: Math.cos(angle) * (tripSize * .2),
-      //     y1: Math.sin(angle) * (tripSize * .2),
-      //     x2: Math.cos(angle) * (tripSize * .35),
-      //     y2: Math.sin(angle) * (tripSize * .35),
-      //   }
-      // });
+      var days = d3.timeDay.range(startDate, endDate, 1);
+      days = _.map(days, (day, index) => {
+        var angle = angleScale(day);
+        return {
+          index,
+          day,
+          angle,
+          x1: Math.cos(angle) * (tripSize * .25),
+          y1: Math.sin(angle) * (tripSize * .25),
+          x2: Math.cos(angle) * (tripSize * .35),
+          y2: Math.sin(angle) * (tripSize * .35),
+        }
+      });
 
       var colors = _.chain(photos)
         .map((photo) => {
           var hour = d3.timeHour.floor(photo.date);
-          var radius = radiusScale(hour);
+          var angle = angleScale(hour);
 
           return _.map(photo.colors, color => {
             if (chroma.contrast(backgroundColor, color) < 4.5) {
               // if contrast is low, up the saturation
-              color = chroma(color).brighten().saturate(2);
+              color = chroma(color).brighten(2).saturate(2);
             } else {
               color = chroma(color).saturate(2);
             }
             // if there's no hue, then don't show it
             if (!color.hsv()[0]) return;
 
-            var angle = angleScale(color.hsv()[0]);
+            var hue = (color.hsv()[0] + 120) % 360;
+            var radius = radiusScale(hue);
             var focusX = Math.cos(angle) * radius;
             var focusY = Math.sin(angle) * radius;
 
@@ -106,7 +106,7 @@ var App = React.createClass({
         x,
         y,
         colors,
-        // days,
+        days,
         id: tripId,
         size: tripSize,
       }

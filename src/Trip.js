@@ -28,18 +28,18 @@ var Trip = React.createClass({
       .text(this.props.id);
 
     // add in markers
-    // this.svg.append('g')
-    //   .classed('markers', true)
-    //   .attr('fill', 'none')
-    //   .attr('stroke', this.props.fontColor)
-    //   .attr('opacity', .25)
-    //   .selectAll('line')
-    //   .data(this.props.days)
-    //   .enter().append('line')
-    //   .attr('x1', (d) => d.x1)
-    //   .attr('x2', (d) => d.x2)
-    //   .attr('y1', (d) => d.y1)
-    //   .attr('y2', (d) => d.y2);
+    this.svg.append('g')
+      .classed('markers', true)
+      .attr('fill', 'none')
+      .attr('stroke', this.props.fontColor)
+      .attr('opacity', .2)
+      .selectAll('line')
+      .data(this.props.days)
+      .enter().append('line')
+      .attr('x1', (d) => d.x1)
+      .attr('x2', (d) => d.x2)
+      .attr('y1', (d) => d.y1)
+      .attr('y2', (d) => d.y2);
 
     this.simulation
       .nodes(this.props.colors)
@@ -58,17 +58,6 @@ var Trip = React.createClass({
       this.ctx.fillStyle = color.color;
       this.ctx.fill();
     });
-
-        // all the colors
-    //     this.circles = this.trip
-    //       .append('g').classed('circles', true)
-    //       // .style("filter", "url(#gooey)")
-    //       .selectAll('circle')
-    //       .data(this.props.colors, d => d.id)
-    //       .enter().append('circle')
-    //       .attr('r', radius)
-    //       .attr('fill', (d) => d.color);
-    // this.circles.attr('transform', (d) => 'translate(' + [d.x, d.y] + ')')
   },
 
   render() {
