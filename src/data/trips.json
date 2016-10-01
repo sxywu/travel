@@ -58,12 +58,13 @@
       "0": ["Adam"],
       "1": [],
       "6": ["Allison"],
-      "10": ["Susie", "Zan", "Kerry", "Erik", "James"]
+      "7": [],
+      "11": ["Susie", "Zan", "Kerry", "Erik", "James"]
     },
     "places": {
       "0": "New York",
       "7": "Boston",
-      "10": "Cape Cod"
+      "11": "Cape Cod"
     },
     "loves": {
       "1": "Metropolitan Museum of Art",
@@ -233,13 +234,17 @@
     "geo": [40.712784, -74.005941],
     "company": {
       "0": [],
+      "1": ["Ron", "Crystal", "Tim"],
+      "2": [],
       "3": ["Yang"]
     },
     "places": {
       "0": "New York",
       "3": "New Haven"
     },
-    "loves": {}
+    "loves": {
+      "1": "A wedding"
+    }
   },
   {
     "id": "12MSY",
