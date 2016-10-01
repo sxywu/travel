@@ -61,7 +61,11 @@ var Trip = React.createClass({
   },
 
   render() {
-    var style = {position: 'relative'};
+    var style = {
+      position: 'absolute',
+      top: this.props.y,
+      left: this.props.x,
+    };
     var canvasStyle = {
       position: 'absolute',
       top: 0,

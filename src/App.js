@@ -5,16 +5,19 @@ import chroma from 'chroma-js';
 
 import Trip from './Trip';
 import photos from './data/more_colors.json';
+import tripsData from './data/trips.json';
 
-var width = 1600;
-var height = 6400;
+var width = 800;
+var height = 1200;
 var backgroundColor = chroma('#273547').darken().hex();
 var fontColor = chroma('#273547').brighten(4).hex();
 
 var maxWidth = 500;
-var sizeScale = d3.scaleLinear().range([100, maxWidth]);
+var sizeScale = d3.scaleLinear().range([maxWidth / 2, maxWidth]);
 var radiusScale = d3.scaleLinear().domain([0, 360]);
 var angleScale = d3.scaleLinear().range([-.5 * Math.PI, 1.5 * Math.PI]);
+var xScale = d3.scaleLinear().domain([-180, 180]).range([0, width]);
+var yScale = d3.scaleLinear().domain([2012, 2016]).range([height, 0]);
 
 var App = React.createClass({
   getInitialState() {
@@ -27,9 +30,6 @@ var App = React.createClass({
   },
 
   componentWillMount() {
-    var index = 0;
-    var perRow = 2;
-
     var trips = _.chain(photos)
       .filter(photo => {
         photo.date = photo.date && new Date(photo.date);
@@ -41,13 +41,13 @@ var App = React.createClass({
     sizeScale.domain([minPhotos, maxPhotos]);
 
     trips = _.map(trips, (photos, tripId) => {
+      var trip = _.find(tripsData, trip => trip.id === tripId);
       var tripSize = sizeScale(photos.length);
       radiusScale.range([tripSize * .1, tripSize * .45]);
 
       // first calculate trip position
-      var x = (index % perRow + .5) * maxWidth;
-      var y = (Math.floor(index / perRow) + .5) * maxWidth;
-      index += 1;
+      var x = xScale(trip.geo[1]);
+      var y = yScale(trip.year);
 
       // then get start and end dates of the trip
       var startDate = _.minBy(photos, photo => photo.date).date;
