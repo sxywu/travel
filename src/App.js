@@ -108,10 +108,10 @@ var App = React.createClass({
         index,
         day,
         angle,
-        x1: Math.cos(angle) * (tripSize * .25),
-        y1: Math.sin(angle) * (tripSize * .25),
-        x2: Math.cos(angle) * (tripSize * .35),
-        y2: Math.sin(angle) * (tripSize * .35),
+        x1: Math.cos(angle) * (tripSize * .1),
+        y1: Math.sin(angle) * (tripSize * .1),
+        x2: Math.cos(angle) * (tripSize * .25),
+        y2: Math.sin(angle) * (tripSize * .25),
       }
     });
   },
