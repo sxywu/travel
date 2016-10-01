@@ -1,0 +1,122 @@
+[
+  {
+    "id": "16PEK",
+    "name": "China",
+    "year": 2016,
+    "geo": [39.904211, 116.407395],
+    "company": {
+      "0": ["mom", "dad", "sister"],
+      "2": ["mom", "dad", "sister", "grandpa", "grandma"],
+      "5": ["sister"],
+      "6": []
+    },
+    "places": {
+      "0": "Beijing",
+      "2": "Jiuzhaigou",
+      "5": "Beijing"
+    },
+    "loves": {
+      "0": "A family reunion",
+      "2": "Land of Fairytales",
+      "4": "Huang Long"
+    }
+  }
+  {
+    "id": "16NRT",
+    "name": "Japan",
+    "year": 2016,
+    "geo": [35.689487, 139.691706],
+    "company": {
+      "0": [],
+      "4": ["mom", "sister"],
+    },
+    "places": {
+      "0": "Los Angeles",
+      "1": "Tokyo",
+      "4": "Hakodate",
+      "6": "Tokyo",
+      "8": "Tokyo"
+    },
+    "loves": {
+      "2": "Ghibli exhibit",
+      "3": "Bakawarai Junsui",
+      "10": "Shinjuku Gyoen",
+      "11": "Sushi Dai"
+    }
+  },
+  {
+    "id": "16SEA",
+    "name": "Seattle",
+    "year": 2016,
+    "geo": [47.606209, -122.332071],
+    "company": {
+      "0": ["Alex"],
+      "2": ["Alex", "Ling", "John"],
+      "4": ["Alex"]
+    },
+    "places": {
+      "0": "Seattle"
+    },
+    "loves": {
+      "1": "Olympic National Park"
+    }
+  },
+  {
+    "id": "16JFK",
+    "name": "New York",
+    "year": 2016,
+    "geo": [40.712784, -74.005941],
+    "company": {
+      "0": ["Adam"],
+      "1": [],
+      "6": ["Allison"],
+      "10": ["Susie", "Zan", "Kerry", "Erik", "James"]
+    },
+    "places": {
+      "0": "New York",
+      "7": "Boston",
+      "10": "Cape Cod"
+    },
+    "loves": {
+      "1": "Metropolitan Museum of Art",
+      "4": "Wicked",
+      "5": "BrooklynJS",
+      "6": "Dominique Ansel Unlimited Possibilities",
+      "9": "Openvis Conf, Day 1"
+    }
+  },
+  {
+    "id": "16STL",
+    "name": "St. Louis",
+    "year": 2016,
+    "geo": [38.627003, -90.199404],
+    "company": {
+      "0": ["Annelise", "Andy"],
+      "1": ["Annelise"],
+      "2": ["Andy"]
+    },
+    "places": {
+      "0": "St. Louis"
+    },
+    "loves": {
+      "1": "RED PANDA"
+    }
+  },
+  {
+    "id": "15HNL",
+    "name": "Hawaii",
+    "year": 2015,
+    "geo": [21.306944, -157.858333],
+    "company": {
+      "0": ["Alex", "Olivia", "Tom", "Joline", "Chris"]
+    },
+    "places": {
+      "0": "Kauai",
+      "4": "Oahu"
+    },
+    "loves": {
+      "0": "Helicopter ride through Kauai",
+      "2": "Ziplining"
+    }
+  }
+]
