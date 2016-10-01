@@ -206,6 +206,7 @@
     "id": "13PDX",
     "name": "Portland",
     "year": 2013,
+    "geo": [45.523062, -122.676482],
     "company": {
       "0": []
     },
@@ -218,6 +219,7 @@
     "id": "13NYC",
     "name": "New York",
     "year": 2013,
+    "geo": [40.712784, -74.005941],
     "company": {
       "0": [],
       "3": ["Yang"]
@@ -232,6 +234,7 @@
     "id": "12MSY",
     "name": "Caribbeans",
     "year": 2012,
+    "geo": [29.951066, -90.071532],
     "company": {
       "0": ["Jen", "Helen", "Amy", "David", "Kevin", "Nobo", "Michael", "Patrick"]
     },
