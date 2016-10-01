@@ -3,6 +3,10 @@ import * as d3 from 'd3';
 import _ from 'lodash';
 
 var radius = 1;
+var arc = d3.arc()
+  .padAngle(.03)
+  .cornerRadius(3);
+
 var Trip = React.createClass({
   componentWillMount() {
     this.simulation = d3.forceSimulation()
@@ -36,6 +40,16 @@ var Trip = React.createClass({
       .attr('fill', this.props.fontColor)
       .attr('font-size', fontSize)
       .text(this.props.name);
+
+    // add in company
+    this.svg.append('g')
+      .classed('company', true)
+      .attr('opacity', .2)
+      .selectAll('path')
+      .data(this.props.company)
+      .enter().append('path')
+      .attr('d', arc)
+      .attr('fill', (d) => d.person === 'Alex' ? '#E68FC3' : this.props.fontColor);
 
     // add in markers
     this.svg.append('g')
