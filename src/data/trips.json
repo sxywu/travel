@@ -1,47 +1,35 @@
 [
   {
-    "id": "16PEK",
-    "name": "China",
-    "year": 2016,
-    "geo": [39.904211, 116.407395],
-    "company": {
-      "0": ["mom", "dad", "sister"],
-      "2": ["mom", "dad", "sister", "grandpa", "grandma"],
-      "5": ["sister"],
-      "6": []
-    },
-    "places": {
-      "0": "Beijing",
-      "2": "Jiuzhaigou",
-      "5": "Beijing"
-    },
-    "loves": {
-      "0": "A family reunion",
-      "2": "Land of Fairytales",
-      "4": "Huang Long"
-    }
-  }
-  {
     "id": "16NRT",
-    "name": "Japan",
+    "name": "Asia",
     "year": 2016,
     "geo": [35.689487, 139.691706],
     "company": {
       "0": [],
       "4": ["mom", "sister"],
+      "12": ["mom", "dad", "sister"],
+      "14": ["mom", "dad", "sister", "grandpa", "grandma"],
+      "17": ["sister"],
+      "18": []
     },
     "places": {
       "0": "Los Angeles",
       "1": "Tokyo",
       "4": "Hakodate",
       "6": "Tokyo",
-      "8": "Tokyo"
+      "8": "Tokyo",
+      "12": "Beijing",
+      "14": "Jiuzhaigou",
+      "17": "Beijing"
     },
     "loves": {
       "2": "Ghibli exhibit",
       "3": "Bakawarai Junsui",
       "10": "Shinjuku Gyoen",
-      "11": "Sushi Dai"
+      "11": "Sushi Dai",
+      "12": "A family reunion",
+      "14": "Land of Fairytales",
+      "16": "Huang Long"
     }
   },
   {
@@ -117,6 +105,146 @@
     "loves": {
       "0": "Helicopter ride through Kauai",
       "2": "Ziplining"
+    }
+  },
+  {
+    "id": "15ARN",
+    "name": "Europe",
+    "year": 2015,
+    "geo": [59.329323, 18.068581],
+    "company": {
+      "0": ["Alex"]
+    },
+    "places": {
+      "0": "Stockholm",
+      "1": "Skaftafell",
+      "2": "Reykjavik",
+      "5": "Stockholm"
+    },
+    "loves": {
+      "3": "Golden Circle",
+      "4": "Blue Lagoon!"
+    }
+  },
+  {
+    "id": "15JFK",
+    "name": "New York",
+    "year": 2015,
+    "geo": [40.712784, -74.005941],
+    "company": {
+      "0": ["Stephanie"]
+    },
+    "places": {
+      "0": "New York"
+    },
+    "loves": {}
+  },
+  {
+    "id": "14NRT",
+    "name": "Japan",
+    "year": 2014,
+    "geo": [35.689487, 139.691706],
+    "company": {
+      "0": ["Alex", "Michael"]
+    },
+    "places": {
+      "0": "San Francisco",
+      "1": "Tokyo",
+      "4": "Hiroshima",
+      "6": "Kyoto",
+      "8": "Osaka",
+      "10": "Kobe",
+      "12": "Tokyo"
+    },
+    "loves": {
+      "2": "Sushi Dai",
+      "5": "Miyajima",
+      "6": "Arashiyama Benkei",
+      "12": "Ghibli Museum"
+    }
+  },
+  {
+    "id": "14SEA",
+    "name": "Seattle",
+    "year": 2014,
+    "geo": [47.606209, -122.332071],
+    "company": {
+      "0": ["Alex", "Bryant"],
+      "1": ["Alex", "Bryant", "Ling", "Jon"]
+    },
+    "places": {
+      "0": "Seattle",
+      "1": "Vancouver"
+    },
+    "loves": {}
+  },
+  {
+    "id": "13LHR",
+    "name": "Europe",
+    "year": 2013,
+    "geo": [51.507351, -0.127758],
+    "company": {
+      "0": ["Clarisse"]
+    },
+    "places": {
+      "0": "London",
+      "4": "Brussels",
+      "5": "Amsterdam",
+      "6": "Paris",
+      "9": "Barcelona",
+      "11": "Madrid",
+      "13": "Lisbon"
+    },
+    "loves": {
+      "2": "Oxford",
+      "9": "Sensi",
+      "10": "Jamon Iberico",
+      "14": "Cascais"
+    }
+  },
+  {
+    "id": "13PDX",
+    "name": "Portland",
+    "year": 2013,
+    "company": {
+      "0": []
+    },
+    "places": {
+      "0": "Portland"
+    },
+    "loves": {}
+  },
+  {
+    "id": "13NYC",
+    "name": "New York",
+    "year": 2013,
+    "company": {
+      "0": [],
+      "3": ["Yang"]
+    },
+    "places": {
+      "0": "New York",
+      "3": "New Haven"
+    },
+    "loves": {}
+  },
+  {
+    "id": "12MSY",
+    "name": "Caribbeans",
+    "year": 2012,
+    "company": {
+      "0": ["Jen", "Helen", "Amy", "David", "Kevin", "Nobo", "Michael", "Patrick"]
+    },
+    "places": {
+      "0": "New Orleans",
+      "4": "Jamaica",
+      "5": "Cayman Islands",
+      "6": "Cozumel",
+      "8": "New Orleans"
+    },
+    "loves": {
+      "4": "ATV",
+      "8": "Royal Street"
     }
   }
 ]
