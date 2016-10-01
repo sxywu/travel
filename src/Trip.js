@@ -21,11 +21,21 @@ var Trip = React.createClass({
         'translate(' + [this.props.size / 2, this.props.size / 2] + ')');
 
     // add in trip name
+    var fontSize = 14;
+    this.svg.append('text')
+      .attr('y', -fontSize - 2)
+      .attr('text-anchor', 'middle')
+      .attr('font-size', fontSize - 2)
+      .attr('dy', '.35em')
+      .attr('fill', this.props.fontColor)
+      .attr('opacity', .5)
+      .text(this.props.year);
     this.svg.append('text')
       .attr('text-anchor', 'middle')
       .attr('dy', '.35em')
       .attr('fill', this.props.fontColor)
-      .text(this.props.id);
+      .attr('font-size', fontSize)
+      .text(this.props.name);
 
     // add in markers
     this.svg.append('g')
