@@ -7,8 +7,8 @@
     "company": {
       "0": [],
       "4": ["mom", "sister"],
-      "12": ["mom", "dad", "sister"],
-      "14": ["mom", "dad", "sister", "grandpa", "grandma"],
+      "12": ["mom", "dad", "sister", "grandpa", "grandma", "aunt", "uncle", "cousin"],
+      "13": ["mom", "dad", "sister", "grandpa", "grandma"],
       "17": ["sister"],
       "18": []
     },
@@ -19,7 +19,7 @@
       "6": "Tokyo",
       "8": "Tokyo",
       "12": "Beijing",
-      "14": "Jiuzhaigou",
+      "13": "Jiuzhaigou",
       "17": "Beijing"
     },
     "loves": {
@@ -141,11 +141,16 @@
   },
   {
     "id": "14NRT",
-    "name": "Japan",
+    "name": "Asia",
     "year": 2014,
     "geo": [35.689487, 139.691706],
     "company": {
-      "0": ["Alex", "Michael"]
+      "0": ["Alex", "Michael"],
+      "15": ["grandpa", "grandma"],
+      "16": ["aunt", "uncle", "cousin"],
+      "17": ["grandpa", "grandma", "aunt", "uncle", "cousin"],
+      "18": ["grandpa", "grandma"],
+      "21": []
     },
     "places": {
       "0": "San Francisco",
@@ -154,13 +159,19 @@
       "6": "Kyoto",
       "8": "Osaka",
       "10": "Kobe",
-      "12": "Tokyo"
+      "12": "Tokyo",
+      "15": "Beijing",
+      "17": "Shangdong",
+      "18": "Beijing",
+      "21": "Tokyo"
     },
     "loves": {
       "2": "Sushi Dai",
       "5": "Miyajima",
       "6": "Arashiyama Benkei",
-      "12": "Ghibli Museum"
+      "12": "Ghibli Museum",
+      "17": "Family",
+      "20": "Peking duck"
     }
   },
   {
