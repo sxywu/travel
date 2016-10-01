@@ -62,9 +62,9 @@ var Trip = React.createClass({
 
   render() {
     var style = {
-      position: 'absolute',
-      top: this.props.y,
-      left: this.props.x,
+      position: 'relative',
+      display: 'inline-block',
+      verticalAlign: 'middle',
     };
     var canvasStyle = {
       position: 'absolute',
@@ -72,12 +72,12 @@ var Trip = React.createClass({
       left: 0,
     }
     return (
-      <div style={style}>
+      <span style={style}>
         <svg ref='svg'
           width={this.props.size} height={this.props.size} />
         <canvas style={canvasStyle} ref='canvas'
           width={this.props.size} height={this.props.size}  />
-      </div>
+      </span>
     );
   }
 });
