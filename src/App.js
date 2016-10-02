@@ -3,6 +3,7 @@ import _ from 'lodash';
 import * as d3 from 'd3';
 import chroma from 'chroma-js';
 
+import Intro from './Intro';
 import Trip from './Trip';
 import photos from './data/more_colors.json';
 import tripsData from './data/trips.json';
@@ -273,7 +274,6 @@ var App = React.createClass({
 
   render() {
     var style = {
-      color: fontColor,
       textAlign: 'center',
     };
     var headerStyle = {
@@ -307,7 +307,8 @@ var App = React.createClass({
           Four Years of Vacations<br />
           in 20,000 Colors<br />
         </h1>
-        <h3>by Shirley Wu</h3>
+        <h3>Shirley Wu</h3>
+        <Intro {...this.state} />
         {trips}
         <div style={footerStyle}>
           Made with 💖 for <a href='http://www.datasketch.es/september/' target='_new'>September</a> <a href='http://www.datasketch.es/'>Datasketch|es</a>
