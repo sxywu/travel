@@ -41,8 +41,7 @@ var App = React.createClass({
       var trip = _.find(tripsData, trip => trip.id === tripId);
       var tripSize = sizeScale(photos.length);
       var innerRadius = tripSize * .08;
-      var outerRadius = tripSize * .31;
-      radiusScale.range([innerRadius, outerRadius]);
+      radiusScale.range([innerRadius, tripSize * .31]);
 
       // then get start and end dates of the trip
       var startDate = _.minBy(photos, photo => photo.date).date;
@@ -57,7 +56,7 @@ var App = React.createClass({
       var loves = this.calculateLoves(trip.loves, tripSize * .365, numDays);
       var company = this.calculateCompany(trip.company, tripSize * .38, numDays);
       var days = d3.timeDay.range(startDate, endDate, 1);
-      days = this.calculateDays(days, innerRadius, outerRadius);
+      days = this.calculateDays(days, innerRadius, tripSize * .5);
 
       var colors = _.chain(photos)
         .map((photo) => {
