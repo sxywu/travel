@@ -10,7 +10,7 @@ import tripsData from './data/trips.json';
 var backgroundColor = chroma('#273547').darken().hex();
 var fontColor = chroma('#273547').brighten(4).hex();
 
-var maxWidth = 425;
+var maxWidth = 400;
 var startAngle = -.5 * Math.PI;
 var endAngle = 1.5 * Math.PI;
 var sizeScale = d3.scaleLinear().range([maxWidth / 2, maxWidth]);
@@ -57,6 +57,7 @@ var App = React.createClass({
       var company = this.calculateCompany(trip.company, tripSize * .38, numDays);
       var days = d3.timeDay.range(startDate, endDate, 1);
       var hovers = this.calculateHovers(days, trip, innerRadius, tripSize * .5);
+      days = this.calculateDays(days, tripSize);
 
       var colors = _.chain(photos)
         .map((photo) => {
@@ -96,6 +97,7 @@ var App = React.createClass({
         name: trip.name,
         id: tripId,
         size: tripSize,
+        days,
         company,
         places,
         loves,
@@ -106,10 +108,17 @@ var App = React.createClass({
     this.setState({trips});
   },
 
-  turnObjToArray(obj) {
-    return _.map(obj, (o, day) => {
-      day = parseInt(day, 10);
-      return {day, }
+  calculateDays(days, tripSize) {
+    var inner = tripSize * .15;
+    var outer = tripSize * .25;
+    return _.map(days, (day, index) => {
+      var angle = angleScale(day);
+      return {
+        x1: Math.cos(angle) * inner,
+        y1: Math.sin(angle) * inner,
+        x2: Math.cos(angle) * outer,
+        y2: Math.sin(angle) * outer,
+      }
     });
   },
 

@@ -84,7 +84,21 @@ var Trip = React.createClass({
       .attr('r', 3)
       .attr('fill', this.props.fontColor);
 
-    // add in markers
+    // day markers
+    this.svg.append('g')
+      .classed('markers', true)
+      .attr('fill', 'none')
+      .attr('stroke', this.props.fontColor)
+      .attr('opacity', lighter)
+      .selectAll('line')
+      .data(this.props.days)
+      .enter().append('line')
+      .attr('x1', (d) => d.x1)
+      .attr('x2', (d) => d.x2)
+      .attr('y1', (d) => d.y1)
+      .attr('y2', (d) => d.y2);
+
+    // hover
     var that = this;
     this.svg.append('g')
       .classed('days', true)
@@ -97,18 +111,6 @@ var Trip = React.createClass({
       .style('cursor', 'pointer')
       .on('mouseenter', function(d) {that.hover(this, d)})
       .on('mouseleave', function(d) {that.hover(this)});
-    // this.svg.append('g')
-    //   .classed('markers', true)
-    //   .attr('fill', 'none')
-    //   .attr('stroke', this.props.fontColor)
-    //   .attr('opacity', lighter)
-    //   .selectAll('line')
-    //   .data(this.props.days)
-    //   .enter().append('line')
-    //   .attr('x1', (d) => d.x1)
-    //   .attr('x2', (d) => d.x2)
-    //   .attr('y1', (d) => d.y1)
-    //   .attr('y2', (d) => d.y2);
 
     this.simulation
       .nodes(this.props.colors)
