@@ -272,7 +272,17 @@ var App = React.createClass({
   },
 
   render() {
-    var tripStyle = {fontColor: this.state.fontColor};
+    var style = {
+      color: fontColor,
+      textAlign: 'center',
+    };
+    var headerStyle = {
+      fontSize: 42,
+    };
+    var footerStyle = {
+      margin: '100px auto 40px auto',
+    };
+    var tripStyle = {fontColor};
     var trips = _.chain(this.state.trips)
       .groupBy(trip => trip.year)
       .sortBy((trips, year) => -parseInt(year, 10))
@@ -292,8 +302,16 @@ var App = React.createClass({
         );
       }).value();
     return (
-      <div className="App">
+      <div className="App" style={style}>
+        <h1 style={headerStyle}>
+          Four Years of Vacations<br />
+          in 20,000 Colors<br />
+        </h1>
+        <h3>by Shirley Wu</h3>
         {trips}
+        <div style={footerStyle}>
+          Made with 💖 for <a href='http://www.datasketch.es/september/' target='_new'>September</a> <a href='http://www.datasketch.es/'>Datasketch|es</a>
+        </div>
       </div>
     );
   }
