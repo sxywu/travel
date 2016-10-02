@@ -7,7 +7,7 @@ var radius = 1;
 var arc = d3.arc()
   .padAngle(.05)
   .cornerRadius(3);
-var red = '#BD1550';
+var red = '#E94E77';
 
 var Trip = React.createClass({
   componentWillMount() {
@@ -65,6 +65,18 @@ var Trip = React.createClass({
       .attr('d', arc)
       .attr('opacity', darker)
       .attr('fill', this.props.fontColor);
+
+    // loves
+    this.svg.append('g')
+      .classed('loves', true)
+      .selectAll('circle')
+      .data(this.props.loves)
+      .enter().append('circle')
+      .attr('cx', (d) => d.x)
+      .attr('cy', (d) => d.y)
+      .attr('r', 2)
+      // .attr('opacity', darker)
+      .attr('fill', this.props.fontColor)
 
     // add in markers
     this.svg.append('g')
