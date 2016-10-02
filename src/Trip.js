@@ -1,7 +1,6 @@
 import React from 'react';
 import * as d3 from 'd3';
 import _ from 'lodash';
-import chroma from 'chroma-js';
 
 var radius = 1;
 var arc = d3.arc()
@@ -9,9 +8,14 @@ var arc = d3.arc()
   .cornerRadius(3);
 var hoverArc = d3.arc();
 var red = '#E94E77';
-var dateFormat = d3.timeFormat('%B %d');
+var dateFormat = d3.timeFormat('%b %d');
 
 var Trip = React.createClass({
+  getInitialState() {
+    return {
+      hovered: null,
+    };
+  },
 
   componentWillMount() {
     this.simulation = d3.forceSimulation()
@@ -85,20 +89,14 @@ var Trip = React.createClass({
     this.svg.append('g')
       .classed('days', true)
       .selectAll('path')
-      .data(this.props.days)
+      .data(this.props.hovers)
       .enter().append('path')
       .attr('d', hoverArc)
       .attr('opacity', 0)
       .attr('fill', this.props.fontColor)
       .style('cursor', 'pointer')
-      .on('mouseenter', function(d) {
-        d3.select(this).attr('opacity', lighter * .5);
-        that.hover('Day ' + d.index + ': ' + dateFormat(d.day));
-      })
-      .on('mouseleave', function(d) {
-        d3.select(this).attr('opacity', 0);
-        that.hover();
-      });
+      .on('mouseenter', function(d) {that.hover(this, d)})
+      .on('mouseleave', function(d) {that.hover(this)});
     // this.svg.append('g')
     //   .classed('markers', true)
     //   .attr('fill', 'none')
@@ -130,9 +128,9 @@ var Trip = React.createClass({
     });
   },
 
-  hover(text) {
-    d3.select(this.refs.annotation)
-      .text(text);
+  hover(el, d) {
+    d3.select(el).attr('opacity', d ? .1 : 0);
+    this.setState({hovered: d});
   },
 
   render() {
@@ -147,15 +145,41 @@ var Trip = React.createClass({
       left: 0,
       pointerEvents: 'none',
     };
-    var fontSize = 16;
+    var fontSize = 18;
     var annotationStyle = {
       textAlign: 'center',
       color: this.props.fontColor,
-      height: fontSize + 2,
-      fontSize: fontSize,
-      width: this.props.size * .75,
-      margin: 'auto',
+      height: fontSize * 3,
+      fontSize,
+      width: Math.max(this.props.size * .5, 200),
+      margin: '10px auto',
     };
+    var headerStyle = {
+      textDecoration: 'underline',
+      fontWeight: 600,
+      margin: 5,
+    };
+    var subStyle = {
+      fontSize: 14,
+      margin: 5
+    };
+
+    var hovered = this.state.hovered;
+    if (hovered) {
+      hovered = (
+        <div>
+          <div style={headerStyle}>
+            Day {hovered.index} ({dateFormat(hovered.day)})
+          </div>
+          <div style={subStyle}>
+            in {hovered.place} {hovered.company.length ? 'with ' + hovered.company.join(', ') : ''}
+          </div>
+          <div style={subStyle}>
+            ♥ {hovered.love}
+          </div>
+        </div>
+      );
+    }
 
     return (
       <span style={style}>
@@ -163,7 +187,9 @@ var Trip = React.createClass({
           width={this.props.size} height={this.props.size}  />
         <svg ref='svg'
           width={this.props.size} height={this.props.size} />
-        <div style={annotationStyle} ref='annotation' />
+        <div style={annotationStyle}>
+          {hovered}
+        </div>
       </span>
     );
   }

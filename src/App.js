@@ -56,7 +56,7 @@ var App = React.createClass({
       var loves = this.calculateLoves(trip.loves, tripSize * .365, numDays);
       var company = this.calculateCompany(trip.company, tripSize * .38, numDays);
       var days = d3.timeDay.range(startDate, endDate, 1);
-      days = this.calculateDays(days, innerRadius, tripSize * .5);
+      var hovers = this.calculateHovers(days, trip, innerRadius, tripSize * .5);
 
       var colors = _.chain(photos)
         .map((photo) => {
@@ -99,24 +99,48 @@ var App = React.createClass({
         company,
         places,
         loves,
-        days,
+        hovers,
       }
     });
 
     this.setState({trips});
   },
 
-  calculateDays(days, innerRadius, outerRadius) {
+  turnObjToArray(obj) {
+    return _.map(obj, (o, day) => {
+      day = parseInt(day, 10);
+      return {day, }
+    });
+  },
+
+  calculateHovers(days, trip, innerRadius, outerRadius) {
+    var companyKeys = _.keys(trip.company);
+    var placeKeys = _.keys(trip.places);
+    var companyDay = companyKeys.shift();
+    var placeDay = placeKeys.shift();
+
     return _.map(days, (day, index) => {
+      // if this index is the same as the next
+      // then shift the next out, because we want to be using that
+      if (index === parseInt(companyKeys[0], 10)) {
+        companyDay = companyKeys.shift();
+      }
+      if (index === parseInt(placeKeys[0], 10)) {
+        placeDay = placeKeys.shift();
+      }
+      var company = trip.company[companyDay];
+      var place = trip.places[placeDay];
+      var love = trip.loves[index];
       var start = angleScale(day) - startAngle;
       var end = angleScale(d3.timeDay.offset(day)) - startAngle; // next day
+
       return {
         innerRadius,
         outerRadius,
         startAngle: start,
         endAngle: end,
-        day,
         index: index + 1,
+        day, company, place, love
       }
     });
   },
