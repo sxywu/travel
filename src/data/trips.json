@@ -223,7 +223,9 @@
       "0": []
     },
     "places": {
-      "0": "Portland"
+      "0": "Portland",
+      "3": "San Francisco",
+      "40": "Portland"
     },
     "loves": {}
   },

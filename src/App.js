@@ -10,7 +10,7 @@ import tripsData from './data/trips.json';
 var backgroundColor = chroma('#273547').darken().hex();
 var fontColor = chroma('#273547').brighten(4).hex();
 
-var maxWidth = 400;
+var maxWidth = 425;
 var startAngle = -.5 * Math.PI;
 var endAngle = 1.5 * Math.PI;
 var sizeScale = d3.scaleLinear().range([maxWidth / 2, maxWidth]);
@@ -40,7 +40,7 @@ var App = React.createClass({
     trips = _.map(trips, (photos, tripId) => {
       var trip = _.find(tripsData, trip => trip.id === tripId);
       var tripSize = sizeScale(photos.length);
-      radiusScale.range([tripSize * .1, tripSize * .4]);
+      radiusScale.range([tripSize * .1, tripSize * .33]);
 
       // then get start and end dates of the trip
       var startDate = _.minBy(photos, photo => photo.date).date;
@@ -50,8 +50,9 @@ var App = React.createClass({
       angleScale.domain([startDate, endDate]);
 
       // calculate company arcs
-      var company = this.calculateCompanyArcs(trip.company,
-        tripSize * .45, d3.timeDay.count(startDate, endDate));
+      var numDays = d3.timeDay.count(startDate, endDate);
+      var places = this.calculatePlaces(trip.places, tripSize * .35, numDays);
+      var company = this.calculateCompanyArcs(trip.company, tripSize * .37, numDays);
       var days = this.calculateDays(startDate, endDate, tripSize);
 
       var colors = _.chain(photos)
@@ -93,6 +94,7 @@ var App = React.createClass({
         id: tripId,
         size: tripSize,
         company,
+        places,
         days,
       }
     });
@@ -102,27 +104,66 @@ var App = React.createClass({
 
   calculateDays(startDate, endDate, tripSize) {
     var days = d3.timeDay.range(startDate, endDate, 1);
+    var inner = tripSize * .1;
+    var outer = tripSize * .25;
     return _.map(days, (day, index) => {
       var angle = angleScale(day);
       return {
         index,
         day,
         angle,
-        x1: Math.cos(angle) * (tripSize * .1),
-        y1: Math.sin(angle) * (tripSize * .1),
-        x2: Math.cos(angle) * (tripSize * .25),
-        y2: Math.sin(angle) * (tripSize * .25),
+        x1: Math.cos(angle) * inner,
+        y1: Math.sin(angle) * inner,
+        x2: Math.cos(angle) * outer,
+        y2: Math.sin(angle) * outer,
       }
     });
   },
 
-  calculateCompanyArcs(company, outerRadius, numDays) {
+  calculatePlaces(places, outerRadius, numDays) {
+    var prevDay = null;
+    var prevAngle = 0;
+    var perAngle = 2 * Math.PI / numDays;
+    var innerRadius = outerRadius - 3;
+    var arcs = _.map(places, (place, day) => {
+      day = parseInt(day, 10);
+      if (!day) { // if day is 0, it's the first one so set
+        prevDay = day;
+        return;
+      }
+
+      var angle = prevAngle + (day - prevDay) * perAngle;
+      var arc = {
+        outerRadius,
+        innerRadius,
+        startAngle: prevAngle,
+        endAngle: angle,
+        place,
+      }
+
+      prevDay = day;
+      prevAngle = angle;
+
+      return arc;
+    });
+
+    arcs.push({
+      outerRadius,
+      innerRadius,
+      startAngle: prevAngle,
+      endAngle: 2 * Math.PI,
+    });
+
+    return _.filter(arcs, arc => !_.isEmpty(arc));
+  },
+
+  calculateCompanyArcs(company, innerRadius, numDays) {
     var prevDay = null;
     var prevPeople = null;
     var prevAngle = 0;
     var perAngle = 2 * Math.PI / numDays;
-    var arcPadding = 3;
-    var familyPadding = 3;
+    var arcPadding = 2;
+    var familyPadding = 4;
     var friendsPadding = 1.5;
     var allArcs = _.map(company, (people, day) => {
       day = parseInt(day, 10);
@@ -134,10 +175,10 @@ var App = React.createClass({
 
       // calculate current angle
       var angle = prevAngle + (day - prevDay) * perAngle;
-      var outer = outerRadius;
-      var inner;
+      var outer;
+      var inner = innerRadius;
       var arcs = _.map(prevPeople, person => {
-        inner = outer - (_.includes(family, person) ? familyPadding : friendsPadding);
+        outer = inner + (_.includes(family, person) ? familyPadding : friendsPadding);
         var arc = {
           outerRadius: outer,
           innerRadius: inner,
@@ -145,7 +186,7 @@ var App = React.createClass({
           endAngle: angle,
           person,
         }
-        outer = inner - arcPadding;
+        inner = outer + arcPadding;
         return arc;
       });
 
@@ -159,10 +200,10 @@ var App = React.createClass({
 
     // and put in the last arc
     // calculate current angle
-    var outer = outerRadius;
-    var inner;
+    var outer;
+    var inner = innerRadius;
     var arcs = _.map(prevPeople, person => {
-      inner = outer - (_.includes(family, person) ? familyPadding : friendsPadding);
+      outer = inner + (_.includes(family, person) ? familyPadding : friendsPadding);
       var arc = {
         outerRadius: outer,
         innerRadius: inner,
@@ -170,7 +211,7 @@ var App = React.createClass({
         endAngle: 2 * Math.PI,
         person,
       }
-      outer = inner - arcPadding;
+      inner = outer + arcPadding;
       return arc;
     });
     allArcs.push(arcs);

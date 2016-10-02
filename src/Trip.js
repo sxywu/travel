@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 var radius = 1;
 var arc = d3.arc()
-  .padAngle(.03)
+  .padAngle(.05)
   .cornerRadius(3);
 
 var Trip = React.createClass({
@@ -24,6 +24,9 @@ var Trip = React.createClass({
       .attr('transform', (d) =>
         'translate(' + [this.props.size / 2, this.props.size / 2] + ')');
 
+    var lighter = .25;
+    var darker = .5;
+
     // add in trip name
     var fontSize = 14;
     this.svg.append('text')
@@ -32,7 +35,7 @@ var Trip = React.createClass({
       .attr('font-size', fontSize - 2)
       .attr('dy', '.35em')
       .attr('fill', this.props.fontColor)
-      .attr('opacity', .5)
+      .attr('opacity', darker)
       .text(this.props.year);
     this.svg.append('text')
       .attr('text-anchor', 'middle')
@@ -44,19 +47,28 @@ var Trip = React.createClass({
     // add in company
     this.svg.append('g')
       .classed('company', true)
-      .attr('opacity', .2)
       .selectAll('path')
       .data(this.props.company)
       .enter().append('path')
       .attr('d', arc)
       .attr('fill', (d) => d.person === 'Alex' ? '#E68FC3' : this.props.fontColor);
 
+    // add in places
+    this.svg.append('g')
+      .classed('places', true)
+      .selectAll('path')
+      .data(this.props.places)
+      .enter().append('path')
+      .attr('d', arc)
+      .attr('opacity', darker)
+      .attr('fill', this.props.fontColor);
+
     // add in markers
     this.svg.append('g')
       .classed('markers', true)
       .attr('fill', 'none')
       .attr('stroke', this.props.fontColor)
-      .attr('opacity', .2)
+      .attr('opacity', lighter)
       .selectAll('line')
       .data(this.props.days)
       .enter().append('line')
@@ -97,10 +109,10 @@ var Trip = React.createClass({
     }
     return (
       <span style={style}>
-        <svg ref='svg'
-          width={this.props.size} height={this.props.size} />
         <canvas style={canvasStyle} ref='canvas'
           width={this.props.size} height={this.props.size}  />
+        <svg ref='svg'
+          width={this.props.size} height={this.props.size} />
       </span>
     );
   }
