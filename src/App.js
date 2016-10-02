@@ -102,6 +102,8 @@ var App = React.createClass({
         places,
         loves,
         hovers,
+        startDate,
+        endDate: d3.timeDay.offset(endDate, -1),
       }
     });
 

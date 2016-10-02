@@ -8,7 +8,7 @@ var arc = d3.arc()
   .cornerRadius(3);
 var hoverArc = d3.arc();
 var red = '#E94E77';
-var dateFormat = d3.timeFormat('%b %d');
+var dateFormat = d3.timeFormat('%b %e');
 
 var Trip = React.createClass({
   getInitialState() {
@@ -154,16 +154,18 @@ var Trip = React.createClass({
       height: fontSize * 3,
       fontSize,
       width: Math.max(this.props.size * .5, 200),
-      margin: '10px auto',
+      margin: 'auto',
     };
     var headerStyle = {
-      textDecoration: 'underline',
+      borderBottom: '1px solid',
       fontWeight: 600,
       margin: 5,
+      padding: 5,
     };
     var subStyle = {
       fontSize: 14,
-      margin: 5
+      margin: 5,
+      opacity: .5,
     };
 
     var hovered = this.state.hovered;
@@ -177,8 +179,17 @@ var Trip = React.createClass({
             in {hovered.place} {hovered.company.length ? 'with ' + hovered.company.join(', ') : ''}
           </div>
           <div style={subStyle}>
-            ♥ {hovered.love}
+            {hovered.love}  💕
           </div>
+        </div>
+      );
+    } else {
+      hovered = (
+        <div>
+          <div style={subStyle}>
+            {dateFormat(this.props.startDate)} to {dateFormat(this.props.endDate)}
+          </div>
+          <div style={subStyle}>✨</div>
         </div>
       );
     }
