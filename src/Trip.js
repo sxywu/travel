@@ -7,6 +7,7 @@ var radius = 1;
 var arc = d3.arc()
   .padAngle(.05)
   .cornerRadius(3);
+var hoverArc = d3.arc();
 var red = '#E94E77';
 var dateFormat = d3.timeFormat('%B %d');
 
@@ -56,10 +57,7 @@ var Trip = React.createClass({
       .enter().append('path')
       .attr('d', arc)
       .attr('opacity', (d) => d.person === 'Alex' ? darker * .8 : lighter)
-      .attr('fill', (d) => d.person === 'Alex' ? red : this.props.fontColor)
-      .style('cursor', 'pointer')
-      .on('mouseenter', (d) => this.hover("With " + d.person))
-      .on('mouseleave', (d) => this.hover());
+      .attr('fill', (d) => d.person === 'Alex' ? red : this.props.fontColor);
 
     // add in places
     this.svg.append('g')
@@ -69,10 +67,7 @@ var Trip = React.createClass({
       .enter().append('path')
       .attr('d', arc)
       .attr('opacity', darker)
-      .attr('fill', this.props.fontColor)
-      .style('cursor', 'pointer')
-      .on('mouseenter', (d) => this.hover("In " + d.place))
-      .on('mouseleave', (d) => this.hover());
+      .attr('fill', this.props.fontColor);
 
     // loves
     this.svg.append('g')
@@ -83,20 +78,16 @@ var Trip = React.createClass({
       .attr('cx', (d) => d.x)
       .attr('cy', (d) => d.y)
       .attr('r', 3)
-      .style('cursor', 'pointer')
-      .attr('fill', this.props.fontColor)
-      .on('mouseenter', (d) => this.hover(d.love + " ♥"))
-      .on('mouseleave', (d) => this.hover());
+      .attr('fill', this.props.fontColor);
 
     // add in markers
     var that = this;
-    arc.padAngle(0).cornerRadius(0);
     this.svg.append('g')
       .classed('days', true)
       .selectAll('path')
       .data(this.props.days)
       .enter().append('path')
-      .attr('d', arc)
+      .attr('d', hoverArc)
       .attr('opacity', 0)
       .attr('fill', this.props.fontColor)
       .style('cursor', 'pointer')
