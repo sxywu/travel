@@ -8,14 +8,16 @@ var arc = d3.arc()
   .padAngle(.05)
   .cornerRadius(3);
 var red = '#E94E77';
+var dateFormat = d3.timeFormat('%b %d');
 
 var Trip = React.createClass({
+
   componentWillMount() {
     this.simulation = d3.forceSimulation()
       .force('collide', d3.forceCollide(radius))
       .force('x', d3.forceX().x(d => d.focusX))
       .force('y', d3.forceY().y(d => d.focusY))
-      .alphaMin(.1);
+      .alphaMin(.45);
   },
 
   componentDidMount() {
@@ -54,7 +56,10 @@ var Trip = React.createClass({
       .enter().append('path')
       .attr('d', arc)
       .attr('opacity', (d) => d.person === 'Alex' ? darker * .8 : lighter)
-      .attr('fill', (d) => d.person === 'Alex' ? red : this.props.fontColor);
+      .attr('fill', (d) => d.person === 'Alex' ? red : this.props.fontColor)
+      .style('cursor', 'pointer')
+      .on('mouseenter', (d) => this.hover("With " + d.person))
+      .on('mouseleave', (d) => this.hover());
 
     // add in places
     this.svg.append('g')
@@ -64,7 +69,10 @@ var Trip = React.createClass({
       .enter().append('path')
       .attr('d', arc)
       .attr('opacity', darker)
-      .attr('fill', this.props.fontColor);
+      .attr('fill', this.props.fontColor)
+      .style('cursor', 'pointer')
+      .on('mouseenter', (d) => this.hover("In " + d.place))
+      .on('mouseleave', (d) => this.hover());
 
     // loves
     this.svg.append('g')
@@ -74,9 +82,11 @@ var Trip = React.createClass({
       .enter().append('circle')
       .attr('cx', (d) => d.x)
       .attr('cy', (d) => d.y)
-      .attr('r', 2)
-      // .attr('opacity', darker)
+      .attr('r', 2.5)
+      .style('cursor', 'pointer')
       .attr('fill', this.props.fontColor)
+      .on('mouseenter', (d) => this.hover(d.love + " ♥"))
+      .on('mouseleave', (d) => this.hover());
 
     // add in markers
     this.svg.append('g')
@@ -99,7 +109,6 @@ var Trip = React.createClass({
 
   forceTick() {
     if (this.simulation.alpha() > .8) return;
-
     // clear canvas
     this.ctx.clearRect(0, 0, this.props.size, this.props.size);
     _.each(this.props.colors, color => {
@@ -109,6 +118,11 @@ var Trip = React.createClass({
       this.ctx.fillStyle = color.color;
       this.ctx.fill();
     });
+  },
+
+  hover(text) {
+    d3.select(this.refs.annotation)
+      .text(text);
   },
 
   render() {
@@ -121,13 +135,25 @@ var Trip = React.createClass({
       position: 'absolute',
       top: 0,
       left: 0,
-    }
+      pointerEvents: 'none',
+    };
+    var fontSize = 16;
+    var annotationStyle = {
+      textAlign: 'center',
+      color: this.props.fontColor,
+      height: fontSize + 2,
+      fontSize: fontSize,
+      width: this.props.size * .75,
+      margin: 'auto',
+    };
+
     return (
       <span style={style}>
         <canvas style={canvasStyle} ref='canvas'
           width={this.props.size} height={this.props.size}  />
         <svg ref='svg'
           width={this.props.size} height={this.props.size} />
+        <div style={annotationStyle} ref='annotation' />
       </span>
     );
   }

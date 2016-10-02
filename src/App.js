@@ -16,7 +16,7 @@ var endAngle = 1.5 * Math.PI;
 var sizeScale = d3.scaleLinear().range([maxWidth / 2, maxWidth]);
 var radiusScale = d3.scaleLinear().domain([0, 360]);
 var angleScale = d3.scaleLinear().range([startAngle, endAngle]);
-var family = ["Alex", "mom", "dad", "sister", "grandpa", "grandma", "aunt", "uncle", "cousin"];
+var family = ["Alex", "Mom", "Dad", "Sister", "Grandpa", "Grandma", "Aunt(s)", "Uncle(s)", "Cousin(s)"];
 
 var App = React.createClass({
   getInitialState() {
@@ -137,6 +137,7 @@ var App = React.createClass({
 
   calculatePlaces(places, outerRadius, numDays) {
     var prevDay = null;
+    var prevPlace = null;
     var prevAngle = 0;
     var perAngle = 2 * Math.PI / numDays;
     var innerRadius = outerRadius - 3;
@@ -144,6 +145,7 @@ var App = React.createClass({
       day = parseInt(day, 10);
       if (!day) { // if day is 0, it's the first one so set
         prevDay = day;
+        prevPlace = place;
         return;
       }
 
@@ -153,11 +155,12 @@ var App = React.createClass({
         innerRadius,
         startAngle: prevAngle,
         endAngle: angle,
-        place,
+        place: prevPlace,
       }
 
       prevDay = day;
       prevAngle = angle;
+      prevPlace = place;
 
       return arc;
     });
@@ -167,6 +170,7 @@ var App = React.createClass({
       innerRadius,
       startAngle: prevAngle,
       endAngle: 2 * Math.PI,
+      place: prevPlace,
     });
 
     return _.filter(arcs, arc => !_.isEmpty(arc));
@@ -177,9 +181,9 @@ var App = React.createClass({
     var prevPeople = null;
     var prevAngle = 0;
     var perAngle = 2 * Math.PI / numDays;
-    var arcPadding = 2;
+    var arcPadding = 1.5;
     var familyPadding = 4;
-    var friendsPadding = 1.5;
+    var friendsPadding = 2;
     var allArcs = _.map(company, (people, day) => {
       day = parseInt(day, 10);
       if (!day) { // if day is 0, it's the first one so set
