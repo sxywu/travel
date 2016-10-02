@@ -40,7 +40,9 @@ var App = React.createClass({
     trips = _.map(trips, (photos, tripId) => {
       var trip = _.find(tripsData, trip => trip.id === tripId);
       var tripSize = sizeScale(photos.length);
-      radiusScale.range([tripSize * .08, tripSize * .31]);
+      var innerRadius = tripSize * .08;
+      var outerRadius = tripSize * .31;
+      radiusScale.range([innerRadius, outerRadius]);
 
       // then get start and end dates of the trip
       var startDate = _.minBy(photos, photo => photo.date).date;
@@ -54,7 +56,8 @@ var App = React.createClass({
       var places = this.calculatePlaces(trip.places, tripSize * .35, numDays);
       var loves = this.calculateLoves(trip.loves, tripSize * .365, numDays);
       var company = this.calculateCompany(trip.company, tripSize * .38, numDays);
-      var days = this.calculateDays(startDate, endDate, tripSize);
+      var days = d3.timeDay.range(startDate, endDate, 1);
+      days = this.calculateDays(days, innerRadius, outerRadius);
 
       var colors = _.chain(photos)
         .map((photo) => {
@@ -104,20 +107,17 @@ var App = React.createClass({
     this.setState({trips});
   },
 
-  calculateDays(startDate, endDate, tripSize) {
-    var days = d3.timeDay.range(startDate, endDate, 1);
-    var inner = tripSize * .1;
-    var outer = tripSize * .25;
+  calculateDays(days, innerRadius, outerRadius) {
     return _.map(days, (day, index) => {
-      var angle = angleScale(day);
+      var start = angleScale(day) - startAngle;
+      var end = angleScale(d3.timeDay.offset(day)) - startAngle; // next day
       return {
-        index,
+        innerRadius,
+        outerRadius,
+        startAngle: start,
+        endAngle: end,
         day,
-        angle,
-        x1: Math.cos(angle) * inner,
-        y1: Math.sin(angle) * inner,
-        x2: Math.cos(angle) * outer,
-        y2: Math.sin(angle) * outer,
+        index: index + 1,
       }
     });
   },

@@ -8,7 +8,7 @@ var arc = d3.arc()
   .padAngle(.05)
   .cornerRadius(3);
 var red = '#E94E77';
-var dateFormat = d3.timeFormat('%b %d');
+var dateFormat = d3.timeFormat('%B %d');
 
 var Trip = React.createClass({
 
@@ -82,25 +82,44 @@ var Trip = React.createClass({
       .enter().append('circle')
       .attr('cx', (d) => d.x)
       .attr('cy', (d) => d.y)
-      .attr('r', 2.5)
+      .attr('r', 3)
       .style('cursor', 'pointer')
       .attr('fill', this.props.fontColor)
       .on('mouseenter', (d) => this.hover(d.love + " ♥"))
       .on('mouseleave', (d) => this.hover());
 
     // add in markers
+    var that = this;
+    arc.padAngle(0).cornerRadius(0);
     this.svg.append('g')
-      .classed('markers', true)
-      .attr('fill', 'none')
-      .attr('stroke', this.props.fontColor)
-      .attr('opacity', lighter)
-      .selectAll('line')
+      .classed('days', true)
+      .selectAll('path')
       .data(this.props.days)
-      .enter().append('line')
-      .attr('x1', (d) => d.x1)
-      .attr('x2', (d) => d.x2)
-      .attr('y1', (d) => d.y1)
-      .attr('y2', (d) => d.y2);
+      .enter().append('path')
+      .attr('d', arc)
+      .attr('opacity', 0)
+      .attr('fill', this.props.fontColor)
+      .style('cursor', 'pointer')
+      .on('mouseenter', function(d) {
+        d3.select(this).attr('opacity', lighter * .5);
+        that.hover('Day ' + d.index + ': ' + dateFormat(d.day));
+      })
+      .on('mouseleave', function(d) {
+        d3.select(this).attr('opacity', 0);
+        that.hover();
+      });
+    // this.svg.append('g')
+    //   .classed('markers', true)
+    //   .attr('fill', 'none')
+    //   .attr('stroke', this.props.fontColor)
+    //   .attr('opacity', lighter)
+    //   .selectAll('line')
+    //   .data(this.props.days)
+    //   .enter().append('line')
+    //   .attr('x1', (d) => d.x1)
+    //   .attr('x2', (d) => d.x2)
+    //   .attr('y1', (d) => d.y1)
+    //   .attr('y2', (d) => d.y2);
 
     this.simulation
       .nodes(this.props.colors)
