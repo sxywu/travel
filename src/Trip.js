@@ -1,11 +1,13 @@
 import React from 'react';
 import * as d3 from 'd3';
 import _ from 'lodash';
+import chroma from 'chroma-js';
 
 var radius = 1;
 var arc = d3.arc()
   .padAngle(.05)
   .cornerRadius(3);
+var red = '#BD1550';
 
 var Trip = React.createClass({
   componentWillMount() {
@@ -51,7 +53,8 @@ var Trip = React.createClass({
       .data(this.props.company)
       .enter().append('path')
       .attr('d', arc)
-      .attr('fill', (d) => d.person === 'Alex' ? '#E68FC3' : this.props.fontColor);
+      .attr('opacity', (d) => d.person === 'Alex' ? darker * .8 : lighter)
+      .attr('fill', (d) => d.person === 'Alex' ? red : this.props.fontColor);
 
     // add in places
     this.svg.append('g')
