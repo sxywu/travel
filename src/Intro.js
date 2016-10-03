@@ -5,7 +5,7 @@ import chroma from 'chroma-js';
 var Remarkable = require('remarkable');
 var md = new Remarkable({linkTarget: '_new', html: true});
 
-var colorsWidth = 400;
+var colorsWidth = 350;
 var colorsHeight = 10;
 var red = '#E94E77';
 var gradientScale = d3.scaleLinear().range([0, 1]);
@@ -82,11 +82,11 @@ So for better or for worse, these colors perfectly represent how I travel: surro
     var lighter = .25;
 
     this.legend = d3.select(this.refs.legend)
-      .append('g').attr('transform', 'translate(' + [maxWidth * .3, maxWidth / 2] + ')');
+      .append('g').attr('transform', 'translate(' + [maxWidth * .2, maxWidth / 2] + ')');
     this.legendText = d3.select(this.refs.legend)
       .append('g')
       // .attr('opacity', darker)
-      .attr('transform', 'translate(' + [maxWidth * .7, maxWidth / 2] + ')');
+      .attr('transform', 'translate(' + [maxWidth * .65, maxWidth / 2] + ')');
 
     // places
     var arcData = {
@@ -199,7 +199,7 @@ So for better or for worse, these colors perfectly represent how I travel: surro
     return (
       <div className="Intro" style={style}>
         <div style={introStyle} dangerouslySetInnerHTML={rawMarkup} />
-        <svg ref='colors' style={{margin: 20}}
+        <svg ref='colors' style={{margin: '20px 0'}}
           width={colorsWidth} height={colorsHeight} />
         <h2>how to read the rings</h2>
         <svg ref='legend' width={colorsWidth} /><br />
