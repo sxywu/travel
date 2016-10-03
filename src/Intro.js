@@ -190,7 +190,7 @@ So for better or for worse, these colors perfectly represent how I travel: surro
       marginBottom: 100,
     };
     var introStyle = {
-      width: colorsWidth * 1.25,
+      maxWidth: 600,
       margin: 'auto',
       padding: 20,
       fontSize: 14,

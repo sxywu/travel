@@ -293,11 +293,12 @@ var App = React.createClass({
       .groupBy(trip => trip.year)
       // .sortBy((trips, year) => -parseInt(year, 10))
       .map(trips => {
-        var width = _.reduce(trips, (sum, trip) => sum + trip.size, 0);
         var style = {
-          width,
           margin: 'auto',
         };
+        if (window.innerWidth > 800) {
+          style.width = _.reduce(trips, (sum, trip) => sum + trip.size, 0);
+        }
         var component = _.map(trips, trip => {
           return <Trip {...trip} {...tripStyle} />;
         });
