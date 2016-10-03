@@ -170,13 +170,18 @@ var Trip = React.createClass({
 
     var hovered = this.state.hovered;
     if (hovered) {
+      var company = hovered.company.length ? 'with ' + hovered.company : '';
+      if (hovered.company.length > 1) {
+        company = 'with ' + _.initial(hovered.company).join(', ') +
+          ' and ' + _.last(hovered.company);
+      }
       hovered = (
         <div>
           <div style={headerStyle}>
             Day {hovered.index} ({dateFormat(hovered.day)})
           </div>
           <div style={subStyle}>
-            in {hovered.place} {hovered.company.length ? 'with ' + hovered.company.join(', ') : ''}
+            in {hovered.place} {company}
           </div>
           <div style={subStyle}>
             {hovered.love}  💕
