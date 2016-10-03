@@ -140,7 +140,7 @@ So for better or for worse, these colors perfectly represent how I travel: surro
       .attr('text-anchor', 'middle')
       .attr('fill', this.props.fontColor)
       .style('font-size', fontSize)
-      .text('Went with Alex 💖');
+      .text('Traveled with Alex 💖');
 
     // company: family
     innerRadius = outerRadius + this.props.arcPadding + fontSize;
@@ -161,7 +161,7 @@ So for better or for worse, these colors perfectly represent how I travel: surro
       .attr('text-anchor', 'middle')
       .attr('fill', this.props.fontColor)
       .style('font-size', fontSize)
-      .text('Went with family');
+      .text('Traveled with/visited family');
 
     innerRadius = outerRadius + this.props.arcPadding + fontSize;
     outerRadius = innerRadius + this.props.friendsPadding;
@@ -181,13 +181,13 @@ So for better or for worse, these colors perfectly represent how I travel: surro
       .attr('text-anchor', 'middle')
       .attr('fill', this.props.fontColor)
       .style('font-size', fontSize)
-      .text('Went with friends');
+      .text('Traveled with/visited friends');
   },
 
   render() {
     var style = {
       textAlign: 'center',
-      marginBottom: 100,
+      marginBottom: 120,
     };
     var introStyle = {
       maxWidth: 600,
@@ -201,8 +201,9 @@ So for better or for worse, these colors perfectly represent how I travel: surro
         <div style={introStyle} dangerouslySetInnerHTML={rawMarkup} />
         <svg ref='colors' style={{margin: '20px 0'}}
           width={colorsWidth} height={colorsHeight} />
-        <h2>how to read the rings</h2>
+        <h2>how to read the rings*</h2>
         <svg ref='legend' width={colorsWidth} /><br />
+        <em style={introStyle}>*hover over the arcs for more details</em>
       </div>
     );
   }

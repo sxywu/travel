@@ -151,7 +151,7 @@ var Trip = React.createClass({
     var annotationStyle = {
       textAlign: 'center',
       color: this.props.fontColor,
-      height: fontSize * 4,
+      height: fontSize * 5,
       fontSize,
       width: Math.max(this.props.size * .5, 200),
       margin: 'auto',
