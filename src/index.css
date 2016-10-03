@@ -4,5 +4,12 @@ body {
 }
 
 a {
+  text-decoration: none;
+  border-bottom: 1px solid;
+  cursor: pointer;
   color: #feffff;
+}
+
+a:hover {
+  border-bottom: 1px dashed;
 }

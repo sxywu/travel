@@ -12,7 +12,8 @@
     "gm": "^1.23.0",
     "lodash": "^4.15.0",
     "react": "^15.3.1",
-    "react-dom": "^15.3.1"
+    "react-dom": "^15.3.1",
+    "remarkable": "^1.7.0"
   },
   "scripts": {
     "start": "react-scripts start",

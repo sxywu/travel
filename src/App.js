@@ -24,6 +24,13 @@ var App = React.createClass({
     return {
       fontColor,
       trips: [],
+      placesRadius: .35,
+      lovesRadius: .365,
+      companyRadius: .38,
+      placePadding: 3,
+      familyPadding: 4,
+      friendsPadding: 2,
+      arcPadding: 1.5,
     };
   },
 
@@ -53,9 +60,9 @@ var App = React.createClass({
 
       // calculate company arcs
       var numDays = d3.timeDay.count(startDate, endDate);
-      var places = this.calculatePlaces(trip.places, tripSize * .35, numDays);
-      var loves = this.calculateLoves(trip.loves, tripSize * .365, numDays);
-      var company = this.calculateCompany(trip.company, tripSize * .38, numDays);
+      var places = this.calculatePlaces(trip.places, tripSize * this.state.placesRadius, numDays);
+      var loves = this.calculateLoves(trip.loves, tripSize * this.state.lovesRadius, numDays);
+      var company = this.calculateCompany(trip.company, tripSize * this.state.companyRadius, numDays);
       var days = d3.timeDay.range(startDate, endDate, 1);
       var hovers = this.calculateHovers(days, trip, innerRadius, tripSize * .5);
       days = this.calculateDays(days, tripSize);
@@ -175,7 +182,7 @@ var App = React.createClass({
     var prevPlace = null;
     var prevAngle = 0;
     var perAngle = 2 * Math.PI / numDays;
-    var innerRadius = outerRadius - 3;
+    var innerRadius = outerRadius - this.state.placePadding;
     var arcs = _.map(places, (place, day) => {
       day = parseInt(day, 10);
       if (!day) { // if day is 0, it's the first one so set
@@ -216,9 +223,6 @@ var App = React.createClass({
     var prevPeople = null;
     var prevAngle = 0;
     var perAngle = 2 * Math.PI / numDays;
-    var arcPadding = 1.5;
-    var familyPadding = 4;
-    var friendsPadding = 2;
     var allArcs = _.map(company, (people, day) => {
       day = parseInt(day, 10);
       if (!day) { // if day is 0, it's the first one so set
@@ -232,7 +236,8 @@ var App = React.createClass({
       var outer;
       var inner = innerRadius;
       var arcs = _.map(prevPeople, person => {
-        outer = inner + (_.includes(family, person) ? familyPadding : friendsPadding);
+        outer = inner + (_.includes(family, person) ?
+        this.state.familyPadding : this.state.friendsPadding);
         var arc = {
           outerRadius: outer,
           innerRadius: inner,
@@ -240,7 +245,7 @@ var App = React.createClass({
           endAngle: angle,
           person,
         }
-        inner = outer + arcPadding;
+        inner = outer + this.state.arcPadding;
         return arc;
       });
 
@@ -257,7 +262,8 @@ var App = React.createClass({
     var outer;
     var inner = innerRadius;
     var arcs = _.map(prevPeople, person => {
-      outer = inner + (_.includes(family, person) ? familyPadding : friendsPadding);
+      outer = inner + (_.includes(family, person) ?
+      this.state.familyPadding : this.state.friendsPadding);
       var arc = {
         outerRadius: outer,
         innerRadius: inner,
@@ -265,7 +271,7 @@ var App = React.createClass({
         endAngle: 2 * Math.PI,
         person,
       }
-      inner = outer + arcPadding;
+      inner = outer + this.state.arcPadding;
       return arc;
     });
     allArcs.push(arcs);
@@ -285,7 +291,7 @@ var App = React.createClass({
     var tripStyle = {fontColor};
     var trips = _.chain(this.state.trips)
       .groupBy(trip => trip.year)
-      .sortBy((trips, year) => -parseInt(year, 10))
+      // .sortBy((trips, year) => -parseInt(year, 10))
       .map(trips => {
         var width = _.reduce(trips, (sum, trip) => sum + trip.size, 0);
         var style = {
@@ -307,11 +313,12 @@ var App = React.createClass({
           Four Years of Vacations<br />
           in 20,000 Colors<br />
         </h1>
-        <h3>Shirley Wu</h3>
-        <Intro {...this.state} />
+        <a href='https://twitter.com/sxywu' target='_new'>Shirley Wu</a>
+        <Intro {...this.state} {...tripStyle}/>
         {trips}
         <div style={footerStyle}>
-          Made with 💖 for <a href='http://www.datasketch.es/september/' target='_new'>September</a> <a href='http://www.datasketch.es/'>Datasketch|es</a>
+          made with 💖 for <a href='http://www.datasketch.es/september/' target='_new'>September</a>: <a href='http://www.datasketch.es/' target='_new'>datasketch|es</a><br />
+          a monthly collaboration between <a href='https://twitter.com/nadiehbremer' target='_new'>Nadieh Bremer</a> and <a href='https://twitter.com/sxywu' target='_new'>Shirley Wu</a>
         </div>
       </div>
     );
